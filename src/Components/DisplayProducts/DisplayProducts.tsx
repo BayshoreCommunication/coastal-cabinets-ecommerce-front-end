@@ -1,13 +1,12 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Product = {
   sku: string;
   title: string;
   regularPrice: number;
-  wholesalePrice: number;
-  image: string;
+  image: string | null;
 };
 
 type DisplayProductsListProps = {
@@ -19,6 +18,7 @@ const DisplayProducts: React.FC<DisplayProductsListProps> = ({
   title,
   products,
 }) => {
+  const router = useRouter();
   return (
     <section className=" px-4 md:px-12 mb-16" style={{ fontFamily: "Poppins" }}>
       <h3 className="text-3xl font-medium text-center text-[#3A3A3A]">
@@ -31,11 +31,19 @@ const DisplayProducts: React.FC<DisplayProductsListProps> = ({
             key={index}
             className="bg-white shadow-md rounded-lg overflow-hidden flex flex-col h-full"
           >
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full h-auto object-cover bg-white p-2"
-            />
+            {product.image ? (
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-auto object-cover bg-white p-2"
+              />
+            ) : (
+              <div className="p-7 h-64">
+                <h3 className="text-black">
+                  No image available for this product. {product.sku}
+                </h3>
+              </div>
+            )}
             <div className="p-4 flex flex-col flex-grow">
               <p className="text-base font font-normal text-gray-600">
                 SKU: <span className="font-semibold">{product.sku}</span>
@@ -49,7 +57,10 @@ const DisplayProducts: React.FC<DisplayProductsListProps> = ({
                   ${product.regularPrice.toFixed(2)}
                 </span>
               </p>
-              <button className="w-full mt-auto py-2 bg-[#0199FE] text-white rounded hover:bg-blue-600 transition mt-3">
+              <button
+                onClick={() => router.push(`/checkout/${product.sku}`)}
+                className="w-full mt-auto py-2 bg-[#0199FE] text-white rounded hover:bg-blue-600 transition mt-3"
+              >
                 Buy Now
               </button>
             </div>
