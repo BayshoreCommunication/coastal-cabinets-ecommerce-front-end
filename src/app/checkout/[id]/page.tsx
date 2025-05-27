@@ -4,15 +4,20 @@ import CheckOut from "@/Components/CheckOut/CheckOut";
 import { allProductData } from "@/Components/DisplayProducts/ProductData/ProductData";
 import { notFound } from "next/navigation";
 
-export default function CheckoutPage({ params }: { params: { id: string } }) {
-  const product = allProductData.find((p) => p.sku === params.id);
+export default async function CheckoutPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const product = allProductData.find((p) => p.sku === id);
 
   if (!product) {
     return notFound();
   }
 
   return (
-    <div className="bg-white min-h-[100vh]"> 
+    <div className="bg-white min-h-[100vh]">
       <CheckOut product={product} />
     </div>
   );

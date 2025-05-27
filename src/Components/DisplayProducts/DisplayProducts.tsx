@@ -52,14 +52,13 @@ const DisplayProducts: React.FC<DisplayProductsListProps> = ({
                 {product.title}
               </h4>
               <p className="text-sm text-gray-600 mt-2 mb-4">
-                Regular Price:{" "}
                 <span className="font-semibold">
                   ${product.regularPrice.toFixed(2)}
                 </span>
               </p>
               <button
                 onClick={() => router.push(`/checkout/${product.sku}`)}
-                className="w-full mt-auto py-2 bg-[#0199FE] text-white rounded hover:bg-blue-600 transition mt-3"
+                className="w-full  py-2 bg-[#0199FE] text-white rounded hover:bg-blue-600 transition mt2"
               >
                 Buy Now
               </button>
