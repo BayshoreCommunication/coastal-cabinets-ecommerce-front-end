@@ -24,6 +24,7 @@ export default function Home() {
   return (
     <div className="bg-white">
       <Banner />
+
       <div className=" mx-2 md:mx-6 lg:mx-24 xl:mx-44 py-10 lg:py-20">
         {/* <ProductNav /> */}
         <AllProducts />
