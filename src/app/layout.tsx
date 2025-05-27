@@ -22,9 +22,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export const metadata = {
-  metadataBase: new URL("https://costal-cabinets-products.vercel.app/"),
+  metadataBase: new URL("https://costal-cabinets-products.vercel.app"),
 };
 
 export default function RootLayout({
