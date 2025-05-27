@@ -1,8 +1,7 @@
-
 // import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
-import React from 'react';
+import React from "react";
 import CartModal from "@/Components/Cart/CartModal";
 import FloatingCartButton from "@/Components/Cart/FloatingCartButton";
 
@@ -32,9 +31,8 @@ const geistMono = Geist_Mono({
 // };
 
 export const metadata = {
-  metadataBase: new URL("https://costal-gilt.vercel.app"),
+  metadataBase: new URL("https://costal-cabinets-products.vercel.app/"),
 };
-
 
 export default function RootLayout({
   children,
