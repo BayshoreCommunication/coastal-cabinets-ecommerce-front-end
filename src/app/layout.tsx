@@ -23,13 +23,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata: Metadata = {
-//   title: "Cabinet LED Store",
-//   description: "Your one-stop shop for cabinet LED lighting solutions",
-//   icons: {
-//     icon: "/favicon.ico",
-//   },
-// };
 
 export const metadata = {
   metadataBase: new URL("https://costal-gilt.vercel.app"),
