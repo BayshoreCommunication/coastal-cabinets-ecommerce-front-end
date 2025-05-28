@@ -342,7 +342,7 @@ const CartCheckout = () => {
                   disabled={isLoading}
                   className="w-full bg-gray-900 text-white py-3 px-4 rounded-lg hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 font-medium text-lg shadow-lg hover:shadow-xl"
                 >
-                  {isLoading ? "Processing..." : "Proceed to Checkout"}
+                  {isLoading ? "Processing..." : "Confirm Order"}
                 </button>
               </form>
             </div>

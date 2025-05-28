@@ -300,7 +300,7 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                           Processing...
                         </>
                       ) : (
-                        "Proceed to Payment"
+                        "Confirm Order"
                       )}
                     </button>
                   </div>
