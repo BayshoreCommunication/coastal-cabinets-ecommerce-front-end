@@ -11,12 +11,9 @@ const SuccessContent = () => {
       <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-md text-center">
         <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto mb-4" />
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Payment Successful!
+          Order Successful!
         </h1>
-        <p className="text-gray-600 mb-6">
-          Thank you for your Order. Your transaction has been completed
-          successfully.
-        </p>
+        <p className="text-gray-600 mb-6">Thank you for your Order.</p>
         <div className="flex gap-4 justify-center">
           <button
             onClick={() => {
