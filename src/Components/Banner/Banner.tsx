@@ -10,7 +10,7 @@ const Banner = () => {
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#252222]">
             Welcome to <span className="text-[#0095FF]">Cabinet LED Store</span>
           </h1>
-          <p className="text-gray-700 text-lg mb-8 max-w-4xl mx-auto">
+          <p className="text-gray-700 text-lg  max-w-4xl mx-auto">
             Please, choose your desired products and quantities, below, and
             submit the order to us. We will respond, promptly. At that time, we
             will verify your order and secure payment.
