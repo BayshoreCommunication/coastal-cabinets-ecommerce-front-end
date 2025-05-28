@@ -3,12 +3,9 @@ import AllProducts from "@/Components/DisplayProducts/AllProducts";
 import Footer from "@/Components/Footer/Footer";
 // import ProductNav from "@/Components/ProductsNav/ProductNav";
 
-
-
 export const metadata = {
-  title: `Cabinet LED Store`,
-  description: `our one-stop shop for cabinet LED lighting solutions.
-`,
+  title: `LED Lighting | Shop LED Lights & Fixtures Online - Cabinet LED Store`,
+  description: `Upgrade to high-performance LED lighting with Cabinet LED Store. Shop top-quality LED bulbs, street lights, high bays, and more for superior brightness and energy efficiency. Light up your space today!.`,
   alternates: {
     canonical: "/",
     languages: {

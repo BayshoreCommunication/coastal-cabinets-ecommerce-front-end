@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://costal-cabinets-products.vercel.app"),
+  metadataBase: new URL("https://www.cabinetledstore.com"),
 };
 
 export default function RootLayout({

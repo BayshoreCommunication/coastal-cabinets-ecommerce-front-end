@@ -145,7 +145,6 @@ const CartCheckout = () => {
       </tbody>
     </table>
 
-    <p style="margin-top: 20px; font-size: 14px; color: #888;">Thank you for your order!</p>
   </div>
 `;
 
