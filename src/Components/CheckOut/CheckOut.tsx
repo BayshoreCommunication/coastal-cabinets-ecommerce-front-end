@@ -96,12 +96,20 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
   </div>
 `;
 
-    const templateParams = {
-      message_html: cartTableHTML,
-    };
+    // const templateParams = {
+    //   message_html: cartTableHTML,
+    //   name: name,
+    //   from_email: email,
+    // };
 
     try {
-      await emailjs.send(serviceID, templateID, templateParams, publicKey);
+      // await emailjs.send(serviceID, templateID, templateParams, publicKey);
+      await emailjs.send(
+        serviceID,
+        templateID,
+        { message_html: cartTableHTML, name: name, from_email: email },
+        publicKey
+      );
       router.push("/success");
     } catch (error) {
       console.error("Submission error:", error);
@@ -211,7 +219,7 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                       onChange={(e) => setName(e.target.value)}
                       required
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
-                      placeholder="Enter your email"
+                      placeholder="Enter your name"
                     />
                   </div>
                   <div>
@@ -228,7 +236,7 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                       onChange={(e) => setPhone(e.target.value)}
                       required
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
-                      placeholder="Enter your email"
+                      placeholder="Enter Phone Number"
                     />
                   </div>
                   <div>
