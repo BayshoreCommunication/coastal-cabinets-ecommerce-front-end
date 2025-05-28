@@ -1,12 +1,11 @@
-import Success from '@/Components/Payment/Success';
-import React from 'react';
+import SuccessContent from "@/Components/Payment/Success";
 
 const page = () => {
-    return (
-        <div>
-            <Success />
-        </div>
-    );
+  return (
+    <div>
+      <SuccessContent />
+    </div>
+  );
 };
 
 export default page;

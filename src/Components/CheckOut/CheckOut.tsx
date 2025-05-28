@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import emailjs from "emailjs-com";
 import Image from "next/image";
 import Link from "next/link";
-import { loadStripe } from "@stripe/stripe-js";
-
-const stripePromise = loadStripe(
-  "pk_test_51QCEQyP8UcLxbKnCXzg48ysRmhBHDnf4N4gzPtBNpc8Hmnk9dtlt4HGdv92JLjRgw57UHqT6EQUHli5yETB9Gbro00bCBEQ8UT"
-);
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 type Product = {
   sku: string;
@@ -17,49 +14,99 @@ type Product = {
 };
 
 const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
+  const router = useRouter();
+
   const [quantity, setQuantity] = useState(1);
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      // Store form data in localStorage
-      localStorage.setItem(
-        "checkout_data",
-        JSON.stringify({ email, address, quantity, product })
-      );
+    const serviceID = "service_fnwn03b";
+    const templateID = "template_83ulct8";
+    const publicKey = "2y-VvuDey2ES2YE3S";
 
-      const stripe = await stripePromise;
-
-      const res = await fetch(
-        "https://costal-server.vercel.app/api/create-checkout-session",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            items: {
-              name: product.title,
-              price: product.regularPrice,
-              quantity: quantity,
-              id: product.sku
-            }
-          }),
-        }
-      );
-
-      const session = await res.json();
-
-      if (stripe && session.id) {
-        await stripe.redirectToCheckout({ sessionId: session.id });
+    const cartTableHTML = `
+  <style>
+    @media only screen and (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
       }
+      thead tr {
+        display: none;
+      }
+      td {
+        position: relative;
+        padding-left: 50%;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+      }
+    }
+  </style>
+
+  <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; color: #333;">
+    <h2 style="color: #4CAF50;">Customer Information</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Phone:</strong> ${phone}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Delivery Address:</strong> ${address}</p>
+
+    <h2 style="margin-top: 30px; color: #4CAF50;">Order Summary</h2>
+    <table style="border-collapse: collapse; width: 100%; margin-top: 10px;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th style="padding: 12px; border: 1px solid #ddd;">Name</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">SKU</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">Quantity</th>
+          <th style="padding: 12px; border: 1px solid #ddd;">Price</th>
+        </tr>
+      </thead>
+      <tbody> 
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;" data-label="Name">${
+              product?.title
+            }</td>
+            <td style="padding: 10px; border: 1px solid #ddd;" data-label="SKU">${
+              product?.sku
+            }</td>
+            <td style="padding: 10px; border: 1px solid #ddd;" data-label="Quantity">${quantity}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;" data-label="Price">$${(
+              quantity * product?.regularPrice
+            ).toFixed(2)}</td>
+          </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td colspan="3" style="padding: 12px; text-align: right; font-weight: bold; border: 1px solid #ddd;">Total:</td>
+          <td style="padding: 12px; font-weight: bold; border: 1px solid #ddd;">$${(
+            quantity * product?.regularPrice
+          ).toFixed(2)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 20px; font-size: 14px; color: #888;">Thank you for your order!</p>
+  </div>
+`;
+
+    const templateParams = {
+      message_html: cartTableHTML,
+    };
+
+    try {
+      await emailjs.send(serviceID, templateID, templateParams, publicKey);
+      router.push("/success");
     } catch (error) {
-      console.error('Checkout error:', error);
+      console.error("Submission error:", error);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -102,7 +149,9 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                 <span className="text-base font-medium">Back to Home</span>
               </Link>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Complete Your Purchase</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              Complete Your Purchase
+            </h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Product Information Section */}
@@ -116,12 +165,16 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                     className="w-full h-80 object-cover rounded-xl shadow-md"
                   />
                   <div className="absolute top-4 right-4 bg-white px-3 py-1.5 rounded-full shadow-sm">
-                    <span className="text-sm font-medium text-gray-900">SKU: {product?.sku}</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      SKU: {product?.sku}
+                    </span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-semibold text-gray-900">{product?.title}</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900">
+                    {product?.title}
+                  </h2>
                   <p className="text-3xl font-bold text-green-500">
                     ${product.regularPrice}
                   </p>
@@ -145,31 +198,72 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                       />
                     </div>
                   </div>
-
                   <div>
-                    <label className="block text-base font-medium text-gray-700 mb-2">
-                      Delivery Address
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Name
                     </label>
-                    <textarea
-                      className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                      placeholder="Enter your delivery address"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      rows={3}
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
+                      placeholder="Enter your email"
                     />
                   </div>
-
                   <div>
-                    <label className="block text-base font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      id="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Email Address
                     </label>
                     <input
                       type="email"
-                      required
+                      id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-900"
-                      placeholder="your@email.com"
+                      required
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Delivery Address
+                    </label>
+                    <textarea
+                      id="address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      required
+                      rows={3}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400 resize-none"
+                      placeholder="Enter your delivery address"
                     />
                   </div>
 
@@ -177,8 +271,9 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`w-full py-4 px-6 bg-black hover:bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-0.5 flex items-center justify-center ${isLoading ? 'opacity-75 cursor-not-allowed' : ''
-                        }`}
+                      className={`w-full py-4 px-6 bg-black hover:bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-0.5 flex items-center justify-center ${
+                        isLoading ? "opacity-75 cursor-not-allowed" : ""
+                      }`}
                     >
                       {isLoading ? (
                         <>
@@ -205,7 +300,7 @@ const CheckOut: React.FC<{ product: Product }> = ({ product }) => {
                           Processing...
                         </>
                       ) : (
-                        'Proceed to Payment'
+                        "Proceed to Payment"
                       )}
                     </button>
                   </div>
