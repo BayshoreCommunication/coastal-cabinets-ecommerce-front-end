@@ -20,13 +20,13 @@ const aluminumProducts = [
   {
     sku: "AP-11-S",
     title: "Recessed Aluminum Profile - 17x7 mm 8 ft",
-    regularPrice: 25.44,
+    regularPrice: 11.17,
     image: "/p1/4.png",
   },
   {
     sku: "AP-11-B",
     title: "Black Recessed Aluminum Profile - 17x7 mm 8 ft",
-    regularPrice: 27.21,
+    regularPrice: 11.98,
     image: "/p1/5.png",
   },
   {
@@ -44,7 +44,7 @@ const aluminumProducts = [
   {
     sku: "AP-32",
     title: "Tiny Surface Aluminum Profile  - 9 x7 mm 8 ft",
-    regularPrice: 22.76,
+    regularPrice: 6.37,
     image: "/p1/8.png",
   },
   {
@@ -68,7 +68,7 @@ const aluminumProducts = [
   {
     sku: "AP-1913-PL",
     title: "Plaster in Aluminum profile for led strip 19x13mm 8ft",
-    regularPrice: 20.57,
+    regularPrice: 15.96,
     image: "/p1/12.png",
   },
   {
@@ -80,7 +80,7 @@ const aluminumProducts = [
   {
     sku: "AP-1206",
     title: "Surface Aluminum Profile for LED strips 12.5x5mm milky cover",
-    regularPrice: 21.89,
+    regularPrice: 10.08,
     image: "/p1/14.png",
   },
 ];
@@ -791,7 +791,6 @@ const easyConnectSystem = [
   },
 ];
 
-
 const allProductData = [
   ...aluminumProducts,
   ...wareAndConnection,
@@ -801,7 +800,7 @@ const allProductData = [
   ...remotes,
   ...sensorAndPanel,
   ...easyConnectSystem,
-]
+];
 
 export {
   aluminumProducts,
@@ -812,5 +811,5 @@ export {
   remotes,
   sensorAndPanel,
   easyConnectSystem,
-  allProductData
+  allProductData,
 };
