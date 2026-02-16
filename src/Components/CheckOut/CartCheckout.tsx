@@ -145,16 +145,31 @@ const CartCheckout = () => {
       </tbody>
     </table>
 
-    <p style="margin-top: 20px; font-size: 14px; color: #888;">Thank you for your order!</p>
   </div>
 `;
 
-    const templateParams = {
-      message_html: cartTableHTML,
-    };
+    // const templateParams = {
+    //   message_html: cartTableHTML,
+    //   name: name,
+    //   from_email: email,
+    // };
 
     try {
-      await emailjs.send(serviceID, templateID, templateParams, publicKey);
+      //await emailjs.send(serviceID, templateID, templateParams, publicKey);
+      await emailjs.send(
+        serviceID,
+        templateID,
+        { message_html: cartTableHTML, name: name, from_email: email },
+        publicKey
+      );
+      console.log("Email sent successfully");
+
+      // Clear cart after successful submission
+      localStorage.removeItem("cart");
+      // change the route to success page with redirect
+      setCartItems([]); // Clear cart state
+      location.replace("/success"); // Redirect to success page
+
       router.push("/success");
     } catch (error) {
       console.error("Submission error:", error);
@@ -283,7 +298,7 @@ const CartCheckout = () => {
                     onChange={(e) => setName(e.target.value)}
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
-                    placeholder="Enter your email"
+                    placeholder="Enter your name"
                   />
                 </div>
                 <div>
@@ -300,7 +315,7 @@ const CartCheckout = () => {
                     onChange={(e) => setPhone(e.target.value)}
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all duration-200 bg-white text-gray-800 placeholder-gray-400"
-                    placeholder="Enter your email"
+                    placeholder="Enter phone number"
                   />
                 </div>
                 <div>
